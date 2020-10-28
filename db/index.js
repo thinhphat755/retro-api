@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
-const pool = mysql.createPool({
-    connectionLimit: 10,
+const connection = mysql.createConnection({
+    //connectionLimit: 10,
     password: '123456789',
     user: 'root',
     database: 'retro_react_db',
@@ -13,12 +13,14 @@ let boardsDB = {};
 
 boardsDB.all = () => {
     return new Promise((resolve ,reject) => {
-        pool.query(`SELECT * FROM boards`, (err, results) => {
+        connection.connect();
+        connection.query(`SELECT * FROM boards`, (err, results) => {
             if(err){
                 return reject(err);
             }
             return resolve(results);
         });
+        connection.end();
     });
 };
 
