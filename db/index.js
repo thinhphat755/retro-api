@@ -1,36 +1,11 @@
-const mysql = require('mysql');
+const Pool = require('pg').Pool;
 
-const pool = mysql.createPool({
-    connectionLimit: 10,
+const pool = new Pool({
+    user: 'postgres',
     password: '123456789',
-    user: 'root',
-    database: 'retro_react_db',
+    database: 'retro-react-db',
     host: 'localhost',
-    port: '3306'
+    port: 5432
 });
 
-let boardsDB = {};
-
-boardsDB.all = () => {
-    return new Promise((resolve ,reject) => {
-        pool.query(`SELECT * FROM boards`, (err, results) => {
-            if(err){
-                return reject(err);
-            }
-            return resolve(results);
-        });
-    });
-};
-
-boardsDB.one = (id) => {
-    return new Promise((resolve ,reject) => {
-        pool.query(`SELECT * FROM boards WHERE id = ?`, [id], (err, results) => {
-            if(err){
-                return reject(err);
-            }
-            return resolve(results[0]);
-        });
-    });
-}
-
-module.exports = boardsDB;
+module.exports = pool;
