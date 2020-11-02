@@ -24,4 +24,16 @@ boardsDB.one = (id) => {
     });
 }
 
+boardsDB.add = (boardName, description) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`INSERT INTO boards (name, description) VALUES ($1, $2) RETURNING *`, [boardName, description], 
+        (err, results) => {
+            if(err){
+                return reject(err);
+            }
+            return resolve(results.rows[0]);
+        });
+    })
+}
+
 module.exports = boardsDB;
