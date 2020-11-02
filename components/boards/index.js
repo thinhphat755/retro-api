@@ -23,10 +23,20 @@ router.get('/:id', async(req, res, next) => {
     }
 });
 
-router.post('/addBoard', async(req, res, next) => {
+router.post('/', async(req, res, next) => {
     try{
         let result = await boardsDB.add(req.body.boardName, req.body.description);
         res.json(result);
+    } catch(e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+router.delete('/:id', async(req, res, next) => {
+    try{
+        let result = await boardsDB.delete(req.params.id);
+        res.json('Board has been deleted!');
     } catch(e) {
         console.log(e);
         res.sendStatus(500);

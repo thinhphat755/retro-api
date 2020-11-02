@@ -36,4 +36,15 @@ boardsDB.add = (boardName, description) => {
     })
 }
 
+boardsDB.delete = (id) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM boards WHERE id = $1`, [id], (err, results) => {
+            if(err) {
+                return reject(err);
+            }
+            return resolve(results.id);
+        });
+    });
+}
+
 module.exports = boardsDB;
