@@ -15,7 +15,7 @@ boardsDB.all = () => {
 
 boardsDB.one = (id) => {
     return new Promise((resolve ,reject) => {
-        pool.query(`SELECT * FROM boards WHERE id = $1`, [id], (err, results) => {
+        pool.query(`SELECT * FROM boards WHERE boards.id = $1`, [id], (err, results) => {
             if(err){
                 return reject(err);
             }
@@ -34,6 +34,18 @@ boardsDB.add = (boardName, description) => {
             return resolve(results.rows[0]);
         });
     })
+}
+
+boardsDB.edit = (id, boardName, description) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`UPDATE boards SET name = ($1), description = ($2) WHERE id = ($3) RETURNING *`, [boardName, description, id],
+        (err, results) => {
+            if(err){
+                return reject(err);
+            }
+            return resolve(results.rows[0]);
+        });
+    });
 }
 
 boardsDB.delete = (id) => {

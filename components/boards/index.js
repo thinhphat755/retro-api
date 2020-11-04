@@ -33,6 +33,17 @@ router.post('/', async(req, res, next) => {
     }
 });
 
+router.put('/:id', async(req, res, next) => {
+    try{
+        let result = await boardsDB.edit(req.params.id, req.body.boardName, req.body.description);
+        //console.log(result);
+        res.json(result);
+    } catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 router.delete('/:id', async(req, res, next) => {
     try{
         let result = await boardsDB.delete(req.params.id);
