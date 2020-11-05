@@ -13,4 +13,34 @@ router.post('/', async(req, res, next) => {
     }
 });
 
+router.get('/:boardId', async(req, res, next) => {
+    try{
+        let result = await tagsDB.getAllTagsByBoardId(req.params.boardId);
+        res.json(result);
+    } catch(e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+router.delete('/:tagId', async(req, res, next) => {
+    try{
+        let result = await tagsDB.deleteTagByTagId(req.params.tagId);
+        res.json('Tag has been deleted!');
+    } catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+router.put('/:tagId', async(req, res, next) => {
+    try{
+        let result = await tagsDB.editTagByTagId(req.params.tagId, req.body.newContent);
+        res.json(result);
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 module.exports = router;
